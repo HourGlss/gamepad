@@ -28,7 +28,7 @@ GAMEPAD_REPORT_DESCRIPTOR = bytes((
 ))
 
 gamepad = usb_hid.Device(
-    descriptor=GAMEPAD_REPORT_DESCRIPTOR,
+    report_descriptor=GAMEPAD_REPORT_DESCRIPTOR,
     usage_page=0x01,           # Generic Desktop Control
     usage=0x05,                # Gamepad
     report_ids=(4,),           # Descriptor uses report ID 4.
