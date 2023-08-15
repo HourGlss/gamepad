@@ -20,7 +20,6 @@ pico_comm = busio.UART(
 button_info = [
     ("sel", board.GP18, board.GP19),
     ("start", board.GP17, board.GP16),
-    ("z", board.GP14, board.GP15),
     ("u", board.GP13, board.GP12),
     ("l", board.GP10, board.GP11),
     ("r", board.GP9, board.GP8),
@@ -34,9 +33,10 @@ while True:
     data = pico_comm.read(3)
     if data is not None:
         lbuttons = [e.value for e in buttons]
-        rx, ry, rs, *rbuttons = struct.unpack('bbbbbbbbbbb', data)
+        rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
         lx, ly, ls = ljs.values()
-        all_buttons = [rs, ls] + rbuttons + lbuttons
+        all_buttons = rbuttons + lbuttons
+        print(all_buttons)
         for i, button in enumerate(all_buttons):
             gamepad_button_num = gamepad_buttons[i]
             if button:
