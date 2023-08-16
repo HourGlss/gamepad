@@ -26,5 +26,5 @@ while True:
     now = int(time.monotonic() * 100)
     if time_last_sent == -1 or now - time_last_sent > 20:
         x, y, s = js.values()
-        var = struct.pack('bbbbbbbbbb', x, y, b1, b2, b3, b4, b5, b6, b7, b8)
+        var = struct.pack('bbbbbbbbbb', x, y, b1.value, b2.value, b3.value, b4.value, b5.value, b6.value, b7.value, b8.value)
         pico_comm.write(var)
