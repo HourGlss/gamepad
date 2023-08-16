@@ -30,7 +30,7 @@ while True:
     now = int(time.monotonic() * 100)
     if time_last_sent == -1 or now - time_last_sent > 20:
         x, y, s = js.values()
-        rbuttons = [e.value for e in buttons]
+        rbuttons = [e.value() for e in buttons]
         var = struct.pack('bbbbbbbbbb', x, y, rbuttons[0], rbuttons[1], rbuttons[2], rbuttons[3], rbuttons[4],
                           rbuttons[5], rbuttons[6], rbuttons[7])
         pico_comm.write(var)

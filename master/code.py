@@ -10,7 +10,12 @@ from fyx_joystick import Joystick
 from fyx_button import Button
 
 print("MASTER")
-gp = Gamepad(usb_hid.devices)
+gamepad_active = False
+try:
+    gp = Gamepad(usb_hid.devices)
+    gamepad_active = True
+except:
+    pass
 gamepad_buttons = tuple([e for e in range(1, 20)])
 pico_comm = busio.UART(
     tx=board.GP0,
@@ -32,15 +37,16 @@ print("SETUP COMPLETE")
 while True:
     data = pico_comm.read(3)
     if data is not None:
-        lbuttons = [e.value for e in buttons]
+        lbuttons = [e.value() for e in buttons]
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
         lx, ly, ls = ljs.values()
         all_buttons = rbuttons + lbuttons
         print(all_buttons)
-        for i, button in enumerate(all_buttons):
-            gamepad_button_num = gamepad_buttons[i]
-            if button:
-                gp.release_buttons(gamepad_button_num)
-            else:
-                gp.press_buttons(gamepad_button_num)
-        gp.move_joysticks(x=rx, y=ry, z=lx, r_z=ly)
+        if gamepad_active:
+            for i, button in enumerate(all_buttons):
+                gamepad_button_num = gamepad_buttons[i]
+                if button:
+                    gp.release_buttons(gamepad_button_num)
+                else:
+                    gp.press_buttons(gamepad_button_num)
+            gp.move_joysticks(x=rx, y=ry, z=lx, r_z=ly)
