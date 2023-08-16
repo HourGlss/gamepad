@@ -25,6 +25,7 @@ time_last_sent = -1
 js = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
+
 while True:
     now = int(time.monotonic() * 100)
     if time_last_sent == -1 or now - time_last_sent > 20:
