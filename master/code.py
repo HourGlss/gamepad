@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER v1")
+print("MASTER v1.1")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
