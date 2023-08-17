@@ -39,6 +39,8 @@ while True:
     if data is not None:
         print(f"length of data: {len(data)}")
         print(data)
+        if len(data) != 10:
+            continue
 
         lbuttons = [e.value() for e in buttons]
         print(f"Buttons from Master {lbuttons}")
