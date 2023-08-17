@@ -34,14 +34,22 @@ button_info = [
 ljs = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
+read_size = 10
+adjust_size = 0
+fixing_data_len = False
 while True:
-    data = pico_comm.read(10)
+    data = pico_comm.read(read_size - adjust_size)
     if data is not None:
-        print(f"length of data: {len(data)}")
-        print(data)
-        if len(data) != 10:
-            continue
+        data_len = len(data)
+        print(f"length of data: {data_len}")
 
+        if data_len != 10:
+            fixing_data_len = True
+            adjust_size = 10 - data_len
+            continue
+        if fixing_data_len:
+            fixing_data_len = False
+            adjust_size = 0
         lbuttons = [e.value() for e in buttons]
         print(f"Buttons from Master {lbuttons}")
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
