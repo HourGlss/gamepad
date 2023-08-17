@@ -5,7 +5,8 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("SLAVE v0.1")
+print("SLAVE v1")
+time.sleep(.5)
 pico_comm = busio.UART(
     tx=board.GP0,
     rx=board.GP1,
