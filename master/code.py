@@ -20,8 +20,7 @@ gamepad_buttons = tuple([e for e in range(1, 20)])
 pico_comm = busio.UART(
     tx=board.GP0,
     rx=board.GP1,
-    baudrate=115200,
-    timeout=.0001)
+    baudrate=115200)
 button_info = [
     ("sel", board.GP18, board.GP19),
     ("start", board.GP17, board.GP16),
@@ -46,8 +45,8 @@ while True:
 
         if data_len != 10:
 
-            adjust_size = 10 - data_len
-            other_adjust_size = 10 - adjust_size
+            adjust_size = read_size - data_len
+            other_adjust_size = read_size - adjust_size
             if fixing_data_len:
                 print("RESETING SYNC")
                 fixing_data_len = False
