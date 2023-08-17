@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER v0.2")
+print("MASTER v0.3")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
@@ -21,7 +21,7 @@ pico_comm = busio.UART(
     tx=board.GP0,
     rx=board.GP1,
     baudrate=115200,
-    timeout=.001)
+    timeout=.0001)
 button_info = [
     ("sel", board.GP18, board.GP19),
     ("start", board.GP17, board.GP16),
@@ -35,7 +35,7 @@ ljs = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
 while True:
-    data = pico_comm.read()
+    data = pico_comm.read(10)
     if data is not None:
         print(f"length of data: {len(data)}")
         print(data)
