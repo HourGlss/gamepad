@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER v0.")
+print("MASTER v0.7")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
@@ -45,13 +45,15 @@ while True:
         print(f"-- {data_len} {adjust_size} {other_adjust_size}")
 
         if data_len != 10:
-            fixing_data_len = True
+
             adjust_size = 10 - data_len
             other_adjust_size = 10 - adjust_size
             if fixing_data_len:
+                print("RESETING SYNC")
                 fixing_data_len = False
                 adjust_size = 0
                 other_adjust_size = 0
+            fixing_data_len = True
             continue
 
         lbuttons = [e.value() for e in buttons]
