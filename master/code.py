@@ -41,14 +41,12 @@ while True:
     data = pico_comm.read(read_size - other_adjust_size)
     if data is not None:
         data_len = len(data)
-        print(f"-- {data_len} {adjust_size} {other_adjust_size}")
 
         if data_len != 10:
 
             adjust_size = read_size - data_len
             other_adjust_size = read_size - adjust_size
             if fixing_data_len:
-                print("RESETING SYNC")
                 fixing_data_len = False
                 adjust_size = 0
                 other_adjust_size = 0
@@ -56,11 +54,8 @@ while True:
             continue
 
         lbuttons = [e.value() for e in buttons]
-        print(f"Buttons from Master {lbuttons}")
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
-        print(f"Buttons from Slave {rbuttons}")
         lx, ly, ls = ljs.values()
-        print(f"{lx} {ly}   {rx} {ry}")
         all_buttons = rbuttons + lbuttons
         print(all_buttons)
         if gamepad_active:
