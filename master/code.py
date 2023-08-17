@@ -20,7 +20,8 @@ gamepad_buttons = tuple([e for e in range(1, 20)])
 pico_comm = busio.UART(
     tx=board.GP0,
     rx=board.GP1,
-    baudrate=115200)
+    baudrate=115200,
+    timeout=.001)
 button_info = [
     ("sel", board.GP18, board.GP19),
     ("start", board.GP17, board.GP16),
