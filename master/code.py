@@ -48,11 +48,12 @@ while True:
             fixing_data_len = True
             adjust_size = 10 - data_len
             other_adjust_size = 10 - adjust_size
+            if fixing_data_len:
+                fixing_data_len = False
+                adjust_size = 0
+                other_adjust_size = 0
             continue
-        if fixing_data_len:
-            fixing_data_len = False
-            adjust_size = 0
-            other_adjust_size = 0
+
         lbuttons = [e.value() for e in buttons]
         print(f"Buttons from Master {lbuttons}")
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
