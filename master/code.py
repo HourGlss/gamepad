@@ -35,7 +35,7 @@ ljs = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
 while True:
-    data = pico_comm.read(3)
+    data = pico_comm.read(10)
     if data is not None:
         lbuttons = [e.value() for e in buttons]
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
