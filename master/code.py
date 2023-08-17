@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER v0.3")
+print("MASTER v0.")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
@@ -36,20 +36,23 @@ buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
 read_size = 10
 adjust_size = 0
+other_adjust_size = 0
 fixing_data_len = False
 while True:
-    data = pico_comm.read(read_size - adjust_size)
+    data = pico_comm.read(read_size - other_adjust_size)
     if data is not None:
         data_len = len(data)
-        print(f"length of data: {data_len}")
+        print(f"-- {data_len} {adjust_size} {other_adjust_size}")
 
         if data_len != 10:
             fixing_data_len = True
             adjust_size = 10 - data_len
+            other_adjust_size = 10 - adjust_size
             continue
         if fixing_data_len:
             fixing_data_len = False
             adjust_size = 0
+            other_adjust_size = 0
         lbuttons = [e.value() for e in buttons]
         print(f"Buttons from Master {lbuttons}")
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
