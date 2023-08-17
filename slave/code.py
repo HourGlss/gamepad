@@ -9,8 +9,7 @@ print("SLAVE v0.1")
 pico_comm = busio.UART(
     tx=board.GP0,
     rx=board.GP1,
-    baudrate=115200,
-    timeout=.001)
+    baudrate=115200)
 button_info = [
     ("c", board.GP17, board.GP16),
     ("t", board.GP14, board.GP15),
