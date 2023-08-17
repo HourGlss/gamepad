@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER")
+print("MASTER v0.1")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
@@ -35,11 +35,17 @@ ljs = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
 while True:
-    data = pico_comm.read(10)
+    data = pico_comm.read()
     if data is not None:
+        print(f"length of data: {len(data)}")
+        print(data)
+
         lbuttons = [e.value() for e in buttons]
+        print(f"Buttons from Master {lbuttons}")
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
+        print(f"Buttons from Slave {rbuttons}")
         lx, ly, ls = ljs.values()
+        print(f"{lx} {ly}   {rx} {ry}")
         all_buttons = rbuttons + lbuttons
         print(all_buttons)
         if gamepad_active:
