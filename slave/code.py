@@ -5,7 +5,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("SLAVE v1.1")
+print("SLAVE v1.2")
 time.sleep(.5)
 pico_comm = busio.UART(
     tx=board.GP0,
@@ -35,3 +35,4 @@ while True:
                           rbuttons[5], rbuttons[6], rbuttons[7])
         pico_comm.write(var)
         time.sleep(1)
+        print(x,y,rbuttons)
