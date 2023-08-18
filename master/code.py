@@ -9,7 +9,7 @@ import struct
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("MASTER v1.1")
+print("MASTER v1.2")
 gamepad_active = False
 try:
     gp = Gamepad(usb_hid.devices)
@@ -42,7 +42,7 @@ while True:
     if data is not None:
         data_len = len(data)
 
-        if data_len != 10:
+        if data_len != read_size:
 
             adjust_size = read_size - data_len
             other_adjust_size = read_size - adjust_size
@@ -57,11 +57,12 @@ while True:
         rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
         lx, ly, ls = ljs.values()
         all_buttons = rbuttons + lbuttons
-        print(all_buttons)
+        print("MASTER",lx,ly,lbuttons)
+        print("SLAVE",rx,ry,rbuttons)
         if gamepad_active:
             for i, button in enumerate(all_buttons):
                 gamepad_button_num = gamepad_buttons[i]
-                if button:
+                if bool(button):
                     gp.release_buttons(gamepad_button_num)
                 else:
                     gp.press_buttons(gamepad_button_num)
