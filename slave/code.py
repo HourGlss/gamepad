@@ -2,10 +2,14 @@ import board
 import time
 import busio
 import struct
+import digitalio
 from fyx_joystick import Joystick
 from fyx_button import Button
 
-print("SLAVE v1.2")
+print("SLAVE v1.3")
+on_indicator = digitalio.DigitalInOut(board.LED)
+on_indicator.direction = digitalio.Direction.OUTPUT
+on_indicator.value = True
 time.sleep(.5)
 pico_comm = busio.UART(
     tx=board.GP0,
@@ -31,8 +35,9 @@ while True:
     if time_last_sent == -1 or now - time_last_sent > 20:
         x, y, s = js.values()
         rbuttons = [btn.value() for btn in buttons]
-        var = struct.pack('bbbbbbbbbb', x, y, rbuttons[0], rbuttons[1], rbuttons[2], rbuttons[3], rbuttons[4],
+        var = struct.pack('bbbbbbbbbbbbbb', 0xC,0xA,0xF,0xE,x, y, rbuttons[0], rbuttons[1], rbuttons[2], rbuttons[3], rbuttons[4],
                           rbuttons[5], rbuttons[6], rbuttons[7])
         pico_comm.write(var)
-        time.sleep(1)
-        print(x,y,rbuttons)
+        time.sleep(.1)
+        print(var)
+        # print(x,y,rbuttons)

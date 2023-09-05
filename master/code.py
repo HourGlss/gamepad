@@ -33,37 +33,24 @@ button_info = [
 ljs = Joystick(board.GP27, board.GP26, board.GP22)
 buttons = [Button(e[0], e[1], e[2]) for e in button_info]
 print("SETUP COMPLETE")
-read_size = 10
-adjust_size = 0
-other_adjust_size = 0
-fixing_data_len = False
+found_sync = False
 while True:
-    data = pico_comm.read(read_size - other_adjust_size)
+    data = pico_comm.read(1)
     if data is not None:
         data_len = len(data)
 
-        if data_len != read_size:
 
-            adjust_size = read_size - data_len
-            other_adjust_size = read_size - adjust_size
-            if fixing_data_len:
-                fixing_data_len = False
-                adjust_size = 0
-                other_adjust_size = 0
-            fixing_data_len = True
-            continue
-
-        lbuttons = [e.value() for e in buttons]
-        rx, ry, *rbuttons = struct.unpack('bbbbbbbbbb', data)
-        lx, ly, ls = ljs.values()
-        all_buttons = rbuttons + lbuttons
-        print("MASTER", lx, ly, lbuttons)
-        print("SLAVE:", rx, ry, rbuttons)
-        if gamepad_active:
-            for i, button in enumerate(all_buttons):
-                gamepad_button_num = gamepad_buttons[i]
-                if bool(button):
-                    gp.release_buttons(gamepad_button_num)
-                else:
-                    gp.press_buttons(gamepad_button_num)
-            gp.move_joysticks(x=rx, y=ry, z=lx, r_z=ly)
+        # lbuttons = [e.value() for e in buttons]
+        # sync,sync2,rx, ry, *rbuttons = struct.unpack('bbbbbbbbbbbbbb', data)
+        # lx, ly, ls = ljs.values()
+        # all_buttons = rbuttons + lbuttons
+        # print("MASTER", lx, ly, lbuttons)
+        # print("SLAVE:", rx, ry, rbuttons)
+        # if gamepad_active:
+        #     for i, button in enumerate(all_buttons):
+        #         gamepad_button_num = gamepad_buttons[i]
+        #         if bool(button):
+        #             gp.release_buttons(gamepad_button_num)
+        #         else:
+        #             gp.press_buttons(gamepad_button_num)
+        #     gp.move_joysticks(x=rx, y=ry, z=lx, r_z=ly)
